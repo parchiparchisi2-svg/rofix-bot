@@ -1,17 +1,32 @@
+import os
 import telebot
+from flask import Flask
+from threading import Thread
 
-TOKEN = '8989576551:AAFLvMZ7AZosLY8T5AJ3HQAnDSkaCptXTZs'
+TOKEN = os.environ.get('TOKEN', '8989576551:AAFLvMZ7AZosLY8T5AJ3HQAnDSkaCptXTZs')
 bot = telebot.TeleBot(TOKEN)
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "ROFIX Bot is running!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 @bot.message_handler(commands=['start', 'menu'])
 def send_welcome(message):
     welcome_text = """✨ **مرحباً بك في بوت ROFIX الرسمي** ✨
 
 إليك قائمة الأوامر المتاحة للتصفح:
-
 📌 /start - القائمة الرئيسية
 👑 /rofix - من هو ROFIX؟
-🛠 /services - الخدمات المتاحة
+🛠️ /services - الخدمات المتاحة
 📞 /contact - التواصل المباشر مع الدعم
 ⚡ /ping - فحص سرعة واستجابة البوت
 ❓ /help - طريقة الاستخدام والتعليمات"""
@@ -19,22 +34,21 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['rofix'])
 def send_rofix(message):
-    bot.reply_to(message, "ROFIX هو نظام برمجاتي متطور مصمم لمساعدتك وتقديم خدمات رقمية سريعة وموثوقة.")
+    bot.reply_to(message, "👑 **ROFIX** هو علامتك التجارية الرسمية والذكية لتسيير وتقديم الخدمات الرقمية باحترافية عالية.")
 
 @bot.message_handler(commands=['services'])
 def send_services(message):
-    bot.reply_to(message, "الخدمات المتاحة حالياً:\n1. إدارة وتطوير بوتات تليجرام\n2. استشارات تقنية\n3. حلول رقمية مخصصة")
-
-@bot.message_handler(commands=['contact'])
-def send_contact(message):
-    bot.reply_to(message, "للتواصل المباشر مع الدعم الفني، يرجى إرسال رسالتك وسنقوم بالرد عليك في أقرب وقت! 💡")
+    bot.reply_to(message, "🛠️ **الخدمات المتاحة:**\n- برمجة وتطوير البوتات\n- حلول رقمية متكاملة\n- دعم فني واستشارات")
 
 @bot.message_handler(commands=['ping'])
 def send_ping(message):
-    bot.reply_to(message, "Pong! ⚡ البوت يعمل بشكل ممتاز وسريع جداً.")
+    bot.reply_to(message, "⚡ البوت يعمل بشكل ممتاز وسريع جداً!")
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    bot.reply_to(message, "استخدم الأوامر الموجودة في القائمة /start أو /menu لتتفاعل مع البوت بكل سهولة.")
+    bot.reply_to(message, "❓ اختر أحد الأوامر في القائمة أو أرسل استفسارك وسيتم خدمتك.")
 
-bot.infinity_polling()
+if __name__ == "__main__":
+    keep_alive()
+    bot.infinity_polling()
+    

@@ -1,7 +1,8 @@
 import telebot
 
 # ضع التوكن الخاص ببوتك هنا بين العلامات
-TOKEN = 'ضع_التوكن_الخاص_ببوتينك_هنا' 
+TOKEN = '8989576551:AAFLvMZ7AZosLY8T5AJ3HQAnDSkaCptXTZs'
+
 bot = telebot.TeleBot(TOKEN)
 
 # أمر القائمة الرئيسية
